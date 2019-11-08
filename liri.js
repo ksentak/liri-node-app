@@ -16,23 +16,30 @@ console.log(userSearch);
 switch (userCommand) {
     //Use omdb api to "movie-this"
     case "movie-this":
-        axios.get("http://www.omdbapi.com/?t="+userSearch+"&y=&plot=short&apikey=trilogy").then(
+        axios.get("http://www.omdbapi.com/?t=" + userSearch + "&y=&plot=short&apikey=trilogy").then(
             function (movieResponse) {
-                console.log("\n Title: "+movieResponse.data.Title);
-                console.log("\n Release Year: "+movieResponse.data.Year);
-                console.log("\n IMDB Rating: "+movieResponse.data.imdbRating);
+                console.log("\n Title: " + movieResponse.data.Title);
+                console.log("\n Release Year: " + movieResponse.data.Year);
+                console.log("\n IMDB Rating: " + movieResponse.data.imdbRating);
                 // console.log("\n Rotten Tomatoes Rating: "+movieResponse.data.Title);
-                console.log("\n Country: "+movieResponse.data.Country);
-                console.log("\n Language: "+movieResponse.data.Language);
-                console.log("\n Plot: "+movieResponse.data.Plot);
-                console.log("\n Actors: "+movieResponse.data.Actors);
+                console.log("\n Country: " + movieResponse.data.Country);
+                console.log("\n Language: " + movieResponse.data.Language);
+                console.log("\n Plot: " + movieResponse.data.Plot);
+                console.log("\n Actors: " + movieResponse.data.Actors);
                 //Current rotten tomatoes rating not clean!!
                 console.log(movieResponse.data.Ratings[1]);
             })
         break;
 
     case "concert-this":
-        outputNum = parseFloat(num1) - parseFloat(num2);
+        axios.get("https://rest.bandsintown.com/artists/" + userSearch + "/events?app_id=codingbootcamp").then(
+            function (concertResponse) {
+                console.log("Here is where " +userSearch+ " is playing next:");
+                console.log("\n Venue: " + concertResponse.data[0].venue.name);
+                console.log("\n Location: " + concertResponse.data[0].venue.city);
+                //Make sure to use moment.js to rearrange date format
+                console.log("\n Date: " + concertResponse.data[0].datetime);
+            })
         break;
 
     case "spotify-this-song":
