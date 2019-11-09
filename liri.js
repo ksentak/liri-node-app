@@ -4,10 +4,20 @@ var keys = require("./keys.js");
 // var spotify = new Spotify(keys.spotify);
 var axios = require("axios");
 
-//Capture command that the user inputs
-
+//Capture commands that the user inputs
+var nodeArgs = process.argv;
 var userCommand = process.argv[2];
-var userSearch = process.argv[3];
+var userSearch ="";
+
+for (var i = 3; i < nodeArgs.length; i++) {
+
+    if (i > 3 && i < nodeArgs.length) {
+      userSearch = userSearch + "+" + nodeArgs[i];
+    } else {
+      userSearch += nodeArgs[i];
+  
+    }
+  }
 
 console.log(userCommand);
 console.log(userSearch);
@@ -51,7 +61,7 @@ switch (userCommand) {
         break;
 
     default:
-        var unrecognized = "Not a recognized command";
+        var unrecognized = "Not a recognized command...";
         console.log(unrecognized)
 }
 
