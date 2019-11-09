@@ -4,6 +4,8 @@ var Spotify = require("node-spotify-api");
 var spotify = new Spotify(keys.spotify);
 var axios = require("axios");
 var fs = require("fs");
+var moment = require('moment'); 
+moment().format();
 
 //Capture commands that the user inputs
 var nodeArgs = process.argv;
@@ -54,7 +56,6 @@ function movieThis() {
             console.log("\n Title: " + movieResponse.data.Title);
             console.log("\n Release Year: " + movieResponse.data.Year);
             console.log("\n IMDB Rating: " + movieResponse.data.imdbRating);
-            // console.log("\n Rotten Tomatoes Rating: "+movieResponse.data.Title);
             console.log("\n Country: " + movieResponse.data.Country);
             console.log("\n Language: " + movieResponse.data.Language);
             console.log("\n Plot: " + movieResponse.data.Plot);
@@ -70,11 +71,11 @@ function movieThis() {
 function concertThis() {
     axios.get("https://rest.bandsintown.com/artists/" + userSearch + "/events?app_id=codingbootcamp").then(
             function (concertResponse) {
+                var dateTime = moment(concertResponse.data[0].datetime);
                 console.log("Here is where " + userSearch + " is playing next:");
                 console.log("\n Venue: " + concertResponse.data[0].venue.name);
                 console.log("\n Location: " + concertResponse.data[0].venue.city);
-                //Make sure to use moment.js to rearrange date format
-                console.log("\n Date: " + concertResponse.data[0].datetime);
+                console.log("\n Date: " + dateTime.format("MM-DD-YYYY"));
     })
 }
 //=====================================================================================================================
@@ -86,14 +87,16 @@ function spotifyThisSong() {
         if (err) {
             return console.log('Error occurred: ' + err);
         }
-        //    for (i = 0; i < data.tracks.length; i++){
-        //        console.log("\n Artist: " + data.tracks.artists[i]);
-        //    }
-
-
-        console.log(data.tracks);
-        console.log(data.tracks[0].artists);
-
+        for (i = 0; i < 5; i++){
+            var n = i+1;
+            console.log(n);
+            console.log("\n Artist: " + data.tracks.items[i].artists[0].name);
+            console.log("\n Song: " + data.tracks.items[i].name);
+            console.log("\n Preview Here: " + data.tracks.items[i].preview_url);
+            console.log("\n Album: " + data.tracks.items[i].album.name);
+            console.log("-----------------------------------------");
+        
+        }
     });
 }
 //====================================================================================================================
@@ -105,11 +108,12 @@ fs.readFile("random.txt", "utf8", function(err, data) {
     if (err) {
       return console.log(err);
     }
+    
     var output = data.split(",");
-    userCommand = output[0];
-    userSearch = output[1];
-    console.log(userCommand);
-    console.log(userSearch);
+    console.log(output[0]);
+    console.log(output[1]);
+
+    spotifyThisSong(output[1]);    
 });
 }
 //=====================================================================================================================
