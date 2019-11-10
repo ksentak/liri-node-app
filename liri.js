@@ -18,29 +18,38 @@ for (var i = 3; i < nodeArgs.length; i++) {
         userSearch = userSearch + "+" + nodeArgs[i];
     } else {
         userSearch += nodeArgs[i];
-
     }
 }
+// console.log(userCommand);
+// console.log(userSearch);
 
-console.log(userCommand);
-console.log(userSearch);
+//Adds line space
+console.log("\n");
 
 //Switch between movie, spotify, concert, and do what it says
 switch (userCommand) {
     case "movie-this":
+        if (userSearch == "") {
+            console.log("If you haven't watched 'Mr. Nobody', then you should!");
+            console.log("It's on Netflix!");
+            userSearch = "Mr. Nobody"
+        }
         movieThis(userSearch);  
       break;
 
-    case "concert-this":
+    case "concert-this":       
         concertThis(userSearch);
         break;
 
     case "spotify-this-song":
-        spotifyThisSong(userSearch);    
+        if (userSearch == "") {
+            userSearch = "the+sign";
+        }
+        spotifyThisSong(userSearch); 
         break;
 
     case "do-what-it-says":
-        doWhatItSays(userSearch);
+        doWhatItSays();
         break;
 
     default:
@@ -95,7 +104,6 @@ function spotifyThisSong() {
             console.log("\n Preview Here: " + data.tracks.items[i].preview_url);
             console.log("\n Album: " + data.tracks.items[i].album.name);
             console.log("-----------------------------------------");
-        
         }
     });
 }
@@ -108,12 +116,13 @@ fs.readFile("random.txt", "utf8", function(err, data) {
     if (err) {
       return console.log(err);
     }
-    
     var output = data.split(",");
-    console.log(output[0]);
-    console.log(output[1]);
+    
+    // console.log(output[0]);
+    // console.log(output[1]);
 
-    spotifyThisSong(output[1]);    
+    userSearch = output[1];
+    spotifyThisSong(userSearch);    
 });
 }
 //=====================================================================================================================
